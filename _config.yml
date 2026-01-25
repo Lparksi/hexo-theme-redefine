@@ -409,6 +409,7 @@ footer:
     enable: false # Whether to enable
     number: # ICP record number
     url: # ICP record url
+    auto_space: false # Whether to enable auto space between Chinese and English
 # FOOTER <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< end
 
 
