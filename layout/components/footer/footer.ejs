@@ -60,6 +60,7 @@
                                             href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v<%-
                                                 getThemeVersion() %></a></span>
                                 <%# 保留主题信息是对作者的尊重，感谢！ %>
+                                    <div id="cdn-provider-logo" class="text-sm lg:block"></div>
                         </div>
                         <% if (theme.footer.icp.enable && theme.footer.icp.hasOwnProperty('number')) { %>
                             <div class="icp-info my-1 <%= theme.footer.icp.auto_space ? '' : 'no-pangu' %>"><a
@@ -111,6 +112,25 @@
                                                                         <%- theme.inject.footer[i] %>
                                                                             <% } } %>
                                                                                 <% } }%>
-
+                                                                                    <script
+                                                                                        <%=theme.global.single_page===true
+                                                                                        && 'data-swup-reload-script' %>>
+                                                                                                (function () {
+                                                                                                    fetch(window.location.href, { method: 'HEAD' })
+                                                                                                        .then(response => {
+                                                                                                            const server = response.headers.get('server');
+                                                                                                            const cdnContainer = document.getElementById('cdn-provider-logo');
+                                                                                                            if (server && cdnContainer) {
+                                                                                                                const s = server.toLowerCase();
+                                                                                                                if (s === 'edgeone-pages') {
+                                                                                                                    cdnContainer.innerHTML = '<span class="text-sm">Provided By&nbsp;</span><img src="<%= config.root %>images/cdn/eo.svg" alt="EdgeOne Pages" style="height: 1.2rem; display: inline-block; vertical-align: middle;">';
+                                                                                                                } else if (s === 'cloudflare') {
+                                                                                                                    cdnContainer.innerHTML = '<span class="text-sm">Provided By&nbsp;</span><img src="<%= config.root %>images/cdn/cf.svg" alt="Cloudflare" style="height: 1.2rem; display: inline-block; vertical-align: middle;">';
+                                                                                                                }
+                                                                                                            }
+                                                                                                        })
+                                                                                                        .catch(console.error);
+                                                                                                })();
+                                                                                        </script>
     </div>
 </footer>
