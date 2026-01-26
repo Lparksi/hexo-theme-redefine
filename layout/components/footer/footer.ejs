@@ -118,16 +118,20 @@
                                                                                                 (function () {
                                                                                                     fetch(window.location.href, { method: 'HEAD' })
                                                                                                         .then(response => {
-                                                                                                            const server = response.headers.get('Server');
+                                                                                                            const h = response.headers;
+                                                                                                            const server = (h.get('Server') || h.get('server') || '').toLowerCase();
                                                                                                             const cdnContainer = document.getElementById('cdn-provider-logo');
+
                                                                                                             if (cdnContainer) {
-                                                                                                                const s = server ? server.toLowerCase() : '';
-                                                                                                                if (s.includes('edgeone') || s.includes('eo-pages')) {
+                                                                                                                const isEdgeOne = server.includes('edgeone') || server.includes('eo-pages') || h.has('eo-cache-status') || h.has('eo-log-uuid');
+                                                                                                                const isCloudflare = server.includes('cloudflare') || h.has('cf-ray') || h.has('cf-cache-status');
+
+                                                                                                                if (isEdgeOne) {
                                                                                                                     cdnContainer.innerHTML = '<span class="text-sm">Provided By&nbsp;</span><img src="<%= config.root %>images/cdn/eo.svg" alt="EdgeOne Pages" style="height: 1.2rem; display: inline-block; vertical-align: middle;">';
-                                                                                                                } else if (s.includes('cloudflare')) {
+                                                                                                                } else if (isCloudflare) {
                                                                                                                     cdnContainer.innerHTML = '<span class="text-sm">Provided By&nbsp;</span><img src="<%= config.root %>images/cdn/cf.svg" alt="Cloudflare" style="height: 1.2rem; display: inline-block; vertical-align: middle;">';
                                                                                                                 } else {
-                                                                                                                    cdnContainer.innerHTML = 'UNKNOWN';
+                                                                                                                    cdnContainer.innerHTML = 'UNKNOWN' + (server ? ' (' + server + ')' : '');
                                                                                                                 }
                                                                                                             }
                                                                                                         })
