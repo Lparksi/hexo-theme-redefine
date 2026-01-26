@@ -120,12 +120,14 @@
                                                                                                         .then(response => {
                                                                                                             const server = response.headers.get('server');
                                                                                                             const cdnContainer = document.getElementById('cdn-provider-logo');
-                                                                                                            if (server && cdnContainer) {
-                                                                                                                const s = server.toLowerCase();
-                                                                                                                if (s === 'edgeone-pages') {
+                                                                                                            if (cdnContainer) {
+                                                                                                                const s = server ? server.toLowerCase() : '';
+                                                                                                                if (s.includes('edgeone')) {
                                                                                                                     cdnContainer.innerHTML = '<span class="text-sm">Provided By&nbsp;</span><img src="<%= config.root %>images/cdn/eo.svg" alt="EdgeOne Pages" style="height: 1.2rem; display: inline-block; vertical-align: middle;">';
-                                                                                                                } else if (s === 'cloudflare') {
+                                                                                                                } else if (s.includes('cloudflare')) {
                                                                                                                     cdnContainer.innerHTML = '<span class="text-sm">Provided By&nbsp;</span><img src="<%= config.root %>images/cdn/cf.svg" alt="Cloudflare" style="height: 1.2rem; display: inline-block; vertical-align: middle;">';
+                                                                                                                } else {
+                                                                                                                    cdnContainer.innerHTML = 'UNKNOW';
                                                                                                                 }
                                                                                                             }
                                                                                                         })
